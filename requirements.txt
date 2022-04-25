@@ -1,0 +1,3 @@
+adafruit-circuitpython-bmp3xx
+gspread
+oauth2client
