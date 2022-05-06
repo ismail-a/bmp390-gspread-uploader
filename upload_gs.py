@@ -30,6 +30,15 @@ bmp.pressure_oversampling = 32
 bmp.temperature_oversampling = 32
 bmp.filter_coefficient = 128
 
+# Read a current time and sensor data
+dt_now = datetime.datetime.now()
+timestamp = dt_now.strftime("%Y-%m-%d %H:%M")
+pressure = "{:.2f}".format(bmp.pressure)
+temperature = "{:.2f}".format(bmp.temperature)
+
+# Output readings
+print(timestamp + "," + pressure + "," + temperature)
+
 # Setup Google spread sheet
 json_keyfile_name = args[1]
 spreadsheet_key = args[2]
@@ -40,12 +49,5 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(json_keyfile_name
 gc = gspread.authorize(credentials)
 ws = gc.open_by_key(spreadsheet_key).worksheet(worksheet_name)
 
-# Read a current time and sensor data
-dt_now = datetime.datetime.now()
-timestamp = dt_now.strftime("%Y-%m-%d %H:%M")
-pressure = "{:.2f}".format(bmp.pressure)
-temperature = "{:.2f}".format(bmp.temperature)
-
-# Output readings
-print(timestamp + "," + pressure + "," + temperature)
+# Send Google sensor readings
 ws.append_row([timestamp, float(pressure), float(temperature)], value_input_option='USER_ENTERED')
